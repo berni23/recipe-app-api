@@ -18,3 +18,10 @@ class ModelTests(TestCase):
         self.assertEqual(user.email, email)
         # check_password -> helper function coming with the user model, checking that the password is correct
         self.assertTrue(user.check_password(password))
+
+    def test_new_user_email_normalized(self):
+        """Test the email for a new user is normalized"""
+        email = 'test@EmAiL.COM'
+        user = get_user_model().objects.create_user(email, 'test123')
+
+        self.assertEqual(user.email, email.lower())

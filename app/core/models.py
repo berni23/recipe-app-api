@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
         """Creates and saves a new user"""
 
         # create new user
-        user = self.model(email=email, **extra_fields)
+        user = self.model(email=self.normalize_email(email), **extra_fields)
 
         # set password ( encrypted)
         user.set_password(password)
