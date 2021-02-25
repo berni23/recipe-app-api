@@ -2,6 +2,14 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+from core import models
+# helper function
+
+
+def sample_user(email='test@mail.com', password='testpass'):
+    """Create a sample user"""
+    return get_user_model().objects.create_user(email, password)
+
 
 class ModelTests(TestCase):
 
@@ -45,3 +53,17 @@ class ModelTests(TestCase):
         # user.is_staff -> not defined in the model,
         #  included as part of the permissions mixin
         self.assertTrue(user.is_staff)
+
+    # test_tag_str: creates a tag,  and checks tat qhen converting it
+    # to string, it gives us the name
+
+    def test_tag_str(self):
+        """ Test the tag string representation"""
+
+        tag = models.Tag.objects.create(
+
+            user=sample_user(),
+            name='vegan',
+        )
+
+        self.assertEqual(str(tag), tag.name)

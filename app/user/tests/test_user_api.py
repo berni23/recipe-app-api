@@ -20,7 +20,7 @@ def create_user(**params):
 class PublicUserApiTests(TestCase):
     """Test the users API (public)"""
 
-    # Setuo -> runs before every test
+    # Setup -> runs before every test
     def setUp(self):
         self.client = APIClient()
 

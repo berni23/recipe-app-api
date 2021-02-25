@@ -4,6 +4,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
 
+# recommended way to retrieve auth usermodel
+from django.conf import settings
+
 
 class UserManager(BaseUserManager):
 
@@ -42,3 +45,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     # by default, username field is name, we can change it to email
 
     USERNAME_FIELD = 'email'
+
+
+class Tag(models.Model):
+    """Tag to be used for a recipe"""
+    name = models.CharField(max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    # tell the model that we want the string representation o
+    # of the tag to be the name
+
+    def __str__(self):
+        return self.name
