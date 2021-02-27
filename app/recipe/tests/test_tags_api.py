@@ -1,14 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.test import TestCase
-
 from rest_framework import status
 from rest_framework.test import APIClient
-
-from core.models import Ingredient, Tag
-from core.tests.test_ingredients_api import INGREDIENTS_URL
-
-
+from core.models import Tag
 from recipe.serializers import TagSerializer
 
 TAGS_URL = reverse('recipe:tag-list')
@@ -91,26 +86,4 @@ class PrivateTagsApiTests(TestCase):
         """ Test creating a new tag with invalid payload"""
         payload = {'name': ''}
         res = self.client.post(TAGS_URL, payload)
-        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_create_ingredient_successful(self):
-        """ Test create a new ingredient"""
-
-        payload = {'name': 'Cabbage'}
-        self.client.post(INGREDIENTS_URL, payload)
-
-        exists = Ingredient.objects.filter(
-            user=self.user,
-            name=payload['name']
-        ).exists()
-
-        self.assertTrue(exists)
-
-    def test_create_ingredient_invalid(self):
-        """ Test creating invalid ingredient fails"""
-
-        payload = {'name': ''}
-
-        res = self.client.post(INGREDIENTS_URL, payload)
-
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
